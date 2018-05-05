@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, url_for
 import cgi
 import os
 import re
@@ -12,14 +12,15 @@ def index():
 
 @app.route("/signup", methods=['POST'])
 def signup():
-    username = request.form['username']
+    username = request.form["username"]
+    password = request.form["password"]
+    verify = request.form["verify"]
+    email = request.form["email"]
+
     username_error = ""
-    user_password = request.form['password']
-    user_password_error = ""
-    validate_password = request.form['verify']
-    validate_password_error = ""
-    user_email = request.form['email']
-    user_email_error = ""
+    password_error = ""
+    verify_error = ""
+    email_error = ""    
 
 #Validate Username
     if username == "":
@@ -32,37 +33,44 @@ def signup():
         username = ""
 
 #validate User's Password
-    if user_password == "":
-        user_password_error = "To proceed, please enter a valid password."
-    elif len(user_password) <= 3 or len(user_password) > 20:
-        user_password_error = "Passwords must be between 3 and 20 characters, please correct to proceed."
-        username = ""
-    elif " " in user_password:
-        user_password_error = "Passwords can not contain spaces."
+    if password == "":
+        password_error = "To proceed, please enter a valid password."
+    elif len(password) <= 3 or len(password) > 20:
+        password_error = "Passwords must be between 3 and 20 characters, please correct to proceed."
+        
+    elif " " in password:
+        password_error = "Passwords can not contain spaces."
 
-    if validate_password == "" or verify != password:
-        validate_password_error = "Your passwords do not match, please re-enter."
+    if verify == "" or verify != password:
+        verify_error = "Your passwords do not match, please re-enter."
+        verify = ""
 
     
  #validate User's Email
-    if user_email != "": #only validate if entered, can optionally be left blank
-        user_password_error = "To proceed, please enter a valid password"
+    if email != "": #only validate if entered, can optionally be left blank
+        user_error = "To proceed, please enter a valid password"
         if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email):
             email_error = "This is not a valid email address, please correct, OR - choose the option of leaving blank"
 
 #If no errors, return welcome message
-        if not username_error and not user_password_error and not _validate_password_error and not user_email_error:
-            return render_template('welcome.html', username = username)
+        if not username_error and not password_error and not verify_error and not email_error:
+            username = username
+            return render_template('welcome.html', username=username)
 
 #If errors, return form with username and email (if entered), but excluding password entries
-    else:
-        return render_template('index.html', 
-        username = username,  #username can be left intact so that user does not have to re-enter 
-        username_error = username_error, 
-        user_password_error = user_password_error, 
-        validate_password_error = validate_password_error, 
-        email = email, #email can be left intact so that user does not have to re-enter
-        email_error = email_error)
+        else:
+            return render_template('index.html', 
+            username = username, #can be left intact so that user does not have to re-enter
+            username_error = username_error, 
+            password_error = password_error,
+            verify_error = verify_error,
+            email = email, #can be left intact so that user does not have to re-enter
+            email_error = email_error)
+
+@app.route('/welcome')
+def complete_signup():
+    username = request.args.get('username')
+    return render_template('welcome.html', username=username)
 
 
     

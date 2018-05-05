@@ -1,24 +1,25 @@
 <!doctype html>
 <html>
     <body>
-        <h1> SIGNUP</h1>
+        <h1> New User Signup (Tracey Cannon)</h1>
         <form action="/signup" method="POST">
-            <label for="signup">Username:</label>
-            <input id ="signup" type="text" name="signup" required/>
+        
+            <label for="username">Username:</label>
+            <input name="username" type="text" value='{{username}}' />
 
             <label for"password">Password:</label>
-            <input id ="password" type="password" name="password" value="{{password}}" required/>
+            <input id ="password" type="password" name="password" value="{{password}}" />
             <p class="error">{{password_error}}</p>
 
-            <label for"verify_password">Verify Password:</label>
-            <input id ="verify_password" type="password" name="verify" value="{{verify}}" required/>
+            <label for"verify">Verify Password:</label>
+            <input id ="verify" type="password" name="verify" value="{{verify}}" />
             <p class="error">{{verify_error}}</p>
 
-            <label for"email">Email (option):</label>
-            <input id="email" type="text" name="email" value="{{email}}" />
+            <label for"email">Email (optional):</label>
+            <input id ="email" type="text" name="email" value="{{email}}" />
             <p class="error">{{email_error}}</p>
 
-            <input type="submit" name="submit" value="Submit" />
+            <input type="submit" name="submit" value="signup" />
 
 
             

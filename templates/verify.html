@@ -7,11 +7,11 @@
 </head>
     <body>
         
-        <form action="/verify_password" methods="POST">
-            <label for="verify_password">Verify Password:</label>
-            <input id ="verify_password" type="text" name="Verify" value='{{password}}' />
+        <form action="/verify" methods="POST">
+            <label for="verify">Verify Password:</label>
+            <input id ="verify" type="text" name="verify" value='{{verify}}' />
             <p class="error">{{password_error}}</p>
-            <input type="submit" name="submit" value="Verify" />
+            <input type="submit" />
         </form>
     </body>
 </html>
